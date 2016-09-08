@@ -305,7 +305,7 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     
     //Define a time scale for one day, from 8am to 4pm
     var yScale = d3.scaleTime()
-                    .domain([ makeTime(7, 30), makeTime(16, 0) ])  //7:30am to 4:00pm
+                    .domain([ makeTime(8, 15), makeTime(15, 15) ])  //7:30am to 4:00pm
                     .range([ 0, h ]);
 
     //
@@ -333,32 +333,32 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     //
     
     //Schedule type
-    svgs.append("text")
-        .attr("class", function(d) {
-
-            var classes = "schedule ";
-
-            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
-                classes += "a";
-            } else if (d.schedule === "B" || d.schedule === "Flex B" || d.schedule === "Early Dismissal B" || d.schedule === "Race Forward B") {
-                classes += "b";
-            }
-            
-            return classes;
-
-        })
-        .attr("x", "10%")
-        .attr("dx", 0)
-        .attr("y", 12)
-        .attr("text-anchor", "start")
-        .style("display", function(d) {
-            if (d.schedule === "") {
-                return "none";
-            }
-        })
-        .text(function(d) {
-            return d.schedule;
-        });
+//    svgs.append("text")
+//        .attr("class", function(d) {
+//
+//            var classes = "schedule ";
+//
+//            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
+//                classes += "a";
+//            } else if (d.schedule === "B" || d.schedule === "Flex B" || d.schedule === "Early Dismissal B" || d.schedule === "Race Forward B") {
+//                classes += "b";
+//            }
+//            
+//            return classes;
+//
+//        })
+//        .attr("x", "10%")
+//        .attr("dx", 0)
+//        .attr("y", 12)
+//        .attr("text-anchor", "start")
+//        .style("display", function(d) {
+//            if (d.schedule === "") {
+//                return "none";
+//            }
+//        })
+//        .text(function(d) {
+//            return d.schedule;
+//        });
 
     //No school reason
     svgs.append("text")
