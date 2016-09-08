@@ -1,0 +1,169 @@
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+
+
+
+
+/* Header */
+
+#header {
+    margin-bottom: 20px;
+}
+
+#header h1 {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#header .toggle {
+    font-size: 12px;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #eee;
+    border: 1px solid #eee;
+    cursor: pointer;
+}
+
+#header .toggle:hover {
+    border-color: deeppink;
+}
+
+#header .toggle.active {
+    font-weight: bold;
+    background-color: pink;
+    border-color: deeppink;
+}
+
+
+
+
+
+/* divs */
+
+div.day {
+}
+
+div.day.today {
+    background-color: red;
+}
+
+div.day.past {
+    background-color: #eee;
+}
+
+
+
+.date div {
+    display: inline-block;
+}
+
+.date .flag {
+    width: 10%;
+    vertical-align: top;
+    padding: 24px 10px 0 10px;
+    font-size: 12px;
+}
+
+.date .flag.today {
+    color: red;
+}
+
+.date .flag.tomorrow {
+    color: blue;
+}
+
+.date .day {
+    font-size: 48px;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.date .dayofweek {
+    font-size: 18px;
+    color: gray;
+    vertical-align: top;
+    padding-top: 9px;
+}
+
+.date .monthyear {
+    font-size: 18px;
+}
+
+
+
+
+
+
+
+/* SVG */
+
+svg {
+}
+
+
+
+
+
+
+
+
+
+/*
+div.date {
+    position: absolute;
+    width: auto;
+    text-align: left;
+    padding: 3px 0 0 3px;
+    color: #999;
+    z-index: 0;
+}
+
+div.date .year {
+    opacity: 0;
+    transition: 0.1s ease-in;
+}
+
+td:hover div.date .year {
+    opacity: 1;
+}
+
+div.schedule {
+    width: auto;
+    text-align: right;
+    padding: 3px 3px 0 0;
+    color: #333;
+    font-weight: bold;
+    z-index: 10;
+}
+
+table.ab div.schedule {
+    width: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div.noSchoolReason {
+    width: auto;
+    padding-top: 60px;
+    text-align: center;
+    vertical-align: middle;
+    color: #777;
+    font-weight: bold;
+    z-index: 20;
+}
+
+table.ab div.noSchoolReason {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-size: 14px;
+    font-weight: bold;
+}
+*/

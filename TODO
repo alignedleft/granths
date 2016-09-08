@@ -1,0 +1,23 @@
+TODO
+
+x generate table
+x color code, label schedules
+x ignore saturdays / sundays
+x add pure.css
+x set up div structure
+x check what today is
+
+
+
+
+
+- render a daily period as SVG
+- render daily periods differently per d.schedule
+
+- UI for naming periods apply to you
+- display class names inside daily SVGs
+- periods that don't apply to you are grayed out (no colors)
+- draw "now" marker
+- "now" should auto update every so often (say 1x/minute)
+
+- ignore data from the past; take user to today
