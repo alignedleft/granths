@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Grant HS Schedule</title>
-    <script type="text/javascript" src="d3.js"></script>
+    <script type="text/javascript" src="d3.min.js"></script>
+    <script type="text/javascript" src="d3-interpolate.min.js"></script>
+    <script type="text/javascript" src="d3-scale-chromatic.min.js"></script>
     <link rel="stylesheet" href="base-min.css">
     <link rel="stylesheet" href="grids-responsive-min.css">
     <link rel="stylesheet" href="styles.css">
@@ -26,12 +29,36 @@
 
 
 
+var palette = d3.scaleOrdinal(d3.schemeSet3);
+
+
+
+
+
 var parseTime = d3.timeParse("%Y-%m-%d");
 var getDayOfWeek = d3.timeFormat("%A");
 var getDay = d3.timeFormat("%e");
 var getMonth = d3.timeFormat("%B");
 var getYear = d3.timeFormat("%Y");
-var getTime = d3.timeFormat("%I:%M");
+
+var getTime = function(input) {
+    
+    var time = d3.timeFormat("%I:%M")(input);
+    var ampm = d3.timeFormat("%p")(input).toLowerCase();
+    
+    //Trim leading zero, if present
+    if (time.slice(0, 1) === "0") {
+        time = time.slice(1);
+    }
+    
+    //Append am/pm
+    time += " " + ampm;
+    
+    return time;
+    
+};
+
+
 
 //Creates a Date object, based on Jan 1, 2000, given hour and minute values
 var makeTime = function(hour, minute) {
@@ -161,18 +188,34 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
         .enter()
         .append("div")
         .attr("class", "pure-u-1 pure-u-lg-1-5")
+        .attr("id", function(d) {
+            
+            //Make strings of each date so we can compare easily
+            var thisDate = d.date.getFullYear() + " " + d.date.getMonth() + " " + d.date.getDate();
+            var today = now.getFullYear() + " " + now.getMonth() + " " + now.getDate();
+                        
+            if (thisDate === today) {
+                //console.log("found today!");
+                return "today";
+            }
+
+        })
         .classed("day", true)
         .classed("today", function(d) {
-            //If this is today
-            //xxx needs work!
-            if (d.date.getTime() == now.getTime()) {
-                alert("found today!");
+            
+            //Make strings of each date so we can compare easily
+            var thisDate = d.date.getFullYear() + " " + d.date.getMonth() + " " + d.date.getDate();
+            var today = now.getFullYear() + " " + now.getMonth() + " " + now.getDate();
+                        
+            if (thisDate === today) {
+                //console.log("found today!");
                 return true;
             }
+
         })
         .classed("past", function(d) {
             //If this is in the past
-            if (d.date.getTime() < now.getTime()) {
+            if (d.date.getTime() < now.getTime() - 86400000) {
                 return true;
             }
         });
@@ -185,21 +228,21 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     var dates = days.append("div")
         .attr("class", "date");
 
-    dates.append("div")
-        .attr("class", "flag")
-        .classed("today", function(d) {
-            if (d.date.getTime() <= now.getTime()) {
-                return true;
-            }
-        })
-        .text(function(d) {
-            if (d.date.getTime() <= now.getTime()) {
-                return "today";
-            }
-        });
+//    dates.append("div")
+//        .attr("class", "flag")
+//        .classed("today", function(d) {
+//            if (d.date.getTime() <= now.getTime()) {
+//                return true;
+//            }
+//        })
+//        .text(function(d) {
+//            if (d.date.getTime() <= now.getTime()) {
+//                return "today";
+//            }
+//        });
 
     dates.append("div")
-        .attr("class", "day")
+        .attr("class", "dayNumber")
         .text(function(d) {
             return getDay(d.date);
         });
@@ -232,18 +275,18 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     //  Create one SVG per day
     //
     var w = "100%";
-    var h = 400;
+    var h = 450;
     
     var svgs = days.append("svg")
         .attr("width", w)
         .attr("height", h);
 
-    svgs.append("rect")
-        .attr("class", "bgrect")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", w)
-        .attr("height", h);
+//    svgs.append("rect")
+//        .attr("class", "bgrect")
+//        .attr("x", 0)
+//        .attr("y", 0)
+//        .attr("width", w)
+//        .attr("height", h);
 //        .attr("fill", function(d) {
 //
 //            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
@@ -270,18 +313,18 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     //
     
     //Background rect to illustrate normal school day length
-    svgs.append("rect")
-        .attr("x", "10%")
-        .attr("y", yScale(makeTime(8, 15)))  //8:15am
-        .attr("width", "90%")
-        .attr("height", yScale(makeTime(15, 15)) - yScale(makeTime(8, 15)))  //3:15pm
-        .attr("fill", "black")
-        .attr("opacity", 0.2)
-        .style("display", function(d) {  //temp to hide purple rects on holidays
-            if (d.schedule === "") {
-                return "none";
-            }
-        });
+    //svgs.append("rect")
+    //    .attr("x", "10%")
+    //    .attr("y", yScale(makeTime(8, 15)))  //8:15am
+    //    .attr("width", "90%")
+    //    .attr("height", yScale(makeTime(15, 15)) - yScale(makeTime(8, 15)))  //3:15pm
+    //    .attr("fill", "black")
+    //    .attr("opacity", 0.2)
+    //    .style("display", function(d) {  //temp to hide purple rects on holidays
+    //        if (d.schedule === "") {
+    //            return "none";
+    //        }
+    //    });
 
 
 
@@ -304,10 +347,10 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
             return classes;
 
         })
-        .attr("x", w)
-        .attr("dx", -4)
+        .attr("x", "10%")
+        .attr("dx", 0)
         .attr("y", 12)
-        .attr("text-anchor", "end")
+        .attr("text-anchor", "start")
         .style("display", function(d) {
             if (d.schedule === "") {
                 return "none";
@@ -332,23 +375,23 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
             return d.note;
         });
 
-    //Scale start time
-    svgs.append("text")
-        .attr("class", "timeLabel")
-        .attr("x", "10%")
-        .attr("y", yScale.range()[0])
-        .attr("dy", 12)
-        .attr("text-anchor", "start")
-        .text(getTime(yScale.domain()[0]));
-
-    //Scale end time
-    svgs.append("text")
-        .attr("class", "timeLabel")
-        .attr("x", "10%")
-        .attr("y", yScale.range()[1])
-        .attr("dy", -2)
-        .attr("text-anchor", "start")
-        .text(getTime(yScale.domain()[1]));
+//    //Scale start time
+//    svgs.append("text")
+//        .attr("class", "timeLabel")
+//        .attr("x", "10%")
+//        .attr("y", yScale.range()[0])
+//        .attr("dy", 12)
+//        .attr("text-anchor", "start")
+//        .text(getTime(yScale.domain()[0]));
+//
+//    //Scale end time
+//    svgs.append("text")
+//        .attr("class", "timeLabel")
+//        .attr("x", "10%")
+//        .attr("y", yScale.range()[1])
+//        .attr("dy", -2)
+//        .attr("text-anchor", "start")
+//        .text(getTime(yScale.domain()[1]));
 
 
 
@@ -377,7 +420,7 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
         .selectAll("g")
         .data(function(d) {
             var thisDaySchedule = schedules[d.schedule];
-            console.log(thisDaySchedule);
+            //console.log(thisDaySchedule);
             return thisDaySchedule;
         })
         .enter()
@@ -387,16 +430,58 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     //For each period, create a rect
     periods.append("rect")
         .attr("x", "10%")
-        .attr("y", yScale(makeTime(8, 15)))  //8:15am
+        .attr("y", function(d) {
+            return yScale(makeTime(d.startHour, d.startMinute));
+        })
         .attr("width", "90%")
-        .attr("height", yScale(makeTime(15, 15)) - yScale(makeTime(8, 15)))  //3:15pm
-        .attr("fill", "gray");
+        .attr("height", function(d) {
+            return yScale(makeTime(d.endHour, d.endMinute)) - yScale(makeTime(d.startHour, d.startMinute));
+        })
+        .attr("fill", function(d) {
+            return palette(d.period);
+        });
 
     //For each period, create a start time label
-    
+    periods.append("text")
+        .attr("class", "timeLabel")
+        .attr("text-anchor", "start")
+        .attr("x", "10%")
+        .attr("dx", 2)
+        .attr("y", function(d) {
+            return yScale(makeTime(d.startHour, d.startMinute));
+        })
+        .attr("dy", 11)
+        .text(function(d) {
+            return getTime(makeTime(d.startHour, d.startMinute));
+        });
+
     //For each period, create an end time label
-    
+    periods.append("text")
+        .attr("class", "timeLabel")
+        .attr("text-anchor", "start")
+        .attr("x", "10%")
+        .attr("dx", 2)
+        .attr("y", function(d) {
+            return yScale(makeTime(d.endHour, d.endMinute));
+        })
+        .attr("dy", -2)
+        .text(function(d) {
+            return getTime(makeTime(d.endHour, d.endMinute));
+        });
+
     //For each period, create a period label
+    periods.append("text")
+        .attr("class", "periodLabel")
+        .attr("text-anchor", "end")
+        .attr("x", w)
+        .attr("dx", -4)
+        .attr("y", function(d) {
+            return yScale(makeTime(d.startHour, d.startMinute));
+        })
+        .attr("dy", 16)
+        .text(function(d) {
+            return d.period;
+        });
 
 
 
@@ -408,8 +493,9 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
 
 
 
-
-
+    //Jump viewport to today's date
+    window.location.href = "#today";
+    
 });
 
 

@@ -46,22 +46,23 @@ html, button, input, select, textarea,
 /* divs */
 
 div.day {
-}
-
-div.day.today {
-    background-color: red;
+    border-top: solid 8px black;
+    margin-bottom: 20px;
 }
 
 div.day.past {
-    background-color: #eee;
+    border-top-color: #eee;
 }
 
-
+div.day.today {
+    border-top-color: red;
+}
 
 .date div {
     display: inline-block;
 }
 
+/*
 .date .flag {
     width: 10%;
     vertical-align: top;
@@ -76,11 +77,14 @@ div.day.past {
 .date .flag.tomorrow {
     color: blue;
 }
+*/
 
-.date .day {
+.date .dayNumber {
     font-size: 48px;
     font-weight: bold;
     padding-right: 10px;
+    padding-left: 10%;
+    margin-top: -4px;
 }
 
 .date .dayofweek {
@@ -92,6 +96,12 @@ div.day.past {
 
 .date .monthyear {
     font-size: 18px;
+}
+
+div.day.past .date .dayNumber,
+div.day.past .date .dayofweek,
+div.day.past .date .monthyear {
+    color: #eee;
 }
 
 
@@ -127,17 +137,22 @@ rect {
     fill: #10E85E;
 }
 
-.timeLabel {
-    font-size: 14px;
-    font-weight: bold;
-    fill: #999;
-}
-
 .noSchoolReason {
     font-size: 24px;
     fill: #aaa;
 }
 
+.timeLabel {
+    font-size: 12px;
+    font-weight: bold;
+    fill: #444;
+}
+
+.periodLabel {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #111;
+}
 
 
 
