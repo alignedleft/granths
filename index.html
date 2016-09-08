@@ -40,56 +40,50 @@ var makeTime = function(hour, minute) {
 
 
 var schedules = {
-    "A": {
-        sequence: [ "Period 1", "Period 2", "Lunch", "Period 3", "Period 4" ],
-        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
-        "Period 2": { startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
-        "Lunch": { startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
-        "Period 3": { startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
-        "Period 4": { startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
-    },
-    "B": {
-        sequence: [ "Period 5", "Period 6", "Lunch", "Period 7", "Period 8" ],
-        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
-        "Period 6": { startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
-        "Lunch": { startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
-        "Period 7": { startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
-        "Period 8": { startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
-    },
-    "Flex A": {
-        sequence: [ "Period 1", "Period 2", "Period 3", "Lunch", "Period 4", "Flex" ],
-        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
-        "Period 2": { startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
-        "Period 3": { startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
-        "Lunch": { startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
-        "Period 4": { startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
-        "Flex": { startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
-    },
-    "Flex B": {
-        sequence: [ "Period 5", "Period 6", "Period 7", "Lunch", "Period 8", "Flex" ],
-        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
-        "Period 6": { startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
-        "Period 7": { startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
-        "Lunch": { startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
-        "Period 8": { startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
-        "Flex": { startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
-    },
-    "Early Dismissal A": {
-        sequence: [ "Period 1", "Period 2", "Period 3", "Lunch", "Period 4" ],
-        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
-        "Period 2": { startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
-        "Period 3": { startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
-        "Lunch": { startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
-        "Period 4": { startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
-    },
-    "Early Dismissal B": {
-        sequence: [ "Period 5", "Period 6", "Period 7", "Lunch", "Period 8" ],
-        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
-        "Period 6": { startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
-        "Period 7": { startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
-        "Lunch": { startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
-        "Period 8": { startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
-    }
+    "A": [
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
+        { period: "Period 2", startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
+        { period: "Lunch", startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
+        { period: "Period 3", startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
+        { period: "Period 4", startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+    ],
+    "B": [
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
+        { period: "Period 6", startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
+        { period: "Lunch", startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
+        { period: "Period 7", startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
+        { period: "Period 8", startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+    ],
+    "Flex A": [
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
+        { period: "Period 2", startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
+        { period: "Period 3", startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
+        { period: "Lunch", startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
+        { period: "Period 4", startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
+        { period: "Flex", startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+    ],
+    "Flex B": [
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
+        { period: "Period 6", startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
+        { period: "Period 7", startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
+        { period: "Lunch", startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
+        { period: "Period 8", startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
+        { period: "Flex", startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+    ],
+    "Early Dismissal A": [
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        { period: "Period 2", startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
+        { period: "Period 3", startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
+        { period: "Lunch", startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
+        { period: "Period 4", startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
+    ],
+    "Early Dismissal B": [
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        { period: "Period 6", startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
+        { period: "Period 7", startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
+        { period: "Lunch", startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
+        { period: "Period 8", startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
+    ]
 };
 
 
