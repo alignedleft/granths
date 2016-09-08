@@ -6,13 +6,14 @@ x ignore saturdays / sundays
 x add pure.css
 x set up div structure
 x check what today is
+x render a daily period as SVG
 
 
 
 
 
-- render a daily period as SVG
 - render daily periods differently per d.schedule
+    - if schedule type doesn't exist in JSON, show "schedule unknown"
 
 - UI for naming periods apply to you
 - display class names inside daily SVGs

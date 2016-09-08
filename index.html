@@ -10,15 +10,15 @@
 </head>
 <body>
 
-    <div id="header">
-<!--        <h1>Grant High School 2016-2017 Academic Calendar</h1>-->
-    <!--
-        <p>
-            <span class="toggle active" id="ab">A/B Schedule</span>
-            <span class="toggle" id="your">Your Classes</span>
-        </p>
-    -->
-    </div>
+<!--
+<div id="header">
+    <h1>Grant High School 2016-2017 Academic Calendar</h1>
+    <p>
+        <span class="toggle active" id="ab">A/B Schedule</span>
+        <span class="toggle" id="your">Your Classes</span>
+    </p>
+</div>
+-->
 
 <script type="text/javascript">
 
@@ -31,21 +31,76 @@ var getDayOfWeek = d3.timeFormat("%A");
 var getDay = d3.timeFormat("%e");
 var getMonth = d3.timeFormat("%B");
 var getYear = d3.timeFormat("%Y");
+var getTime = d3.timeFormat("%I:%M");
+
+//Creates a Date object, based on Jan 1, 2000, given hour and minute values
+var makeTime = function(hour, minute) {
+    return new Date(2000, 0, 1, hour, minute);
+};
 
 
+var schedules = {
+    "A": {
+        sequence: [ "Period 1", "Period 2", "Lunch", "Period 3", "Period 4" ],
+        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
+        "Period 2": { startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
+        "Lunch": { startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
+        "Period 3": { startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
+        "Period 4": { startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+    },
+    "B": {
+        sequence: [ "Period 5", "Period 6", "Lunch", "Period 7", "Period 8" ],
+        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
+        "Period 6": { startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
+        "Lunch": { startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
+        "Period 7": { startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
+        "Period 8": { startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+    },
+    "Flex A": {
+        sequence: [ "Period 1", "Period 2", "Period 3", "Lunch", "Period 4", "Flex" ],
+        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
+        "Period 2": { startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
+        "Period 3": { startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
+        "Lunch": { startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
+        "Period 4": { startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
+        "Flex": { startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+    },
+    "Flex B": {
+        sequence: [ "Period 5", "Period 6", "Period 7", "Lunch", "Period 8", "Flex" ],
+        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
+        "Period 6": { startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
+        "Period 7": { startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
+        "Lunch": { startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
+        "Period 8": { startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
+        "Flex": { startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+    },
+    "Early Dismissal A": {
+        sequence: [ "Period 1", "Period 2", "Period 3", "Lunch", "Period 4" ],
+        "Period 1": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        "Period 2": { startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
+        "Period 3": { startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
+        "Lunch": { startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
+        "Period 4": { startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
+    },
+    "Early Dismissal B": {
+        sequence: [ "Period 5", "Period 6", "Period 7", "Lunch", "Period 8" ],
+        "Period 5": { startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        "Period 6": { startHour: 9, startMinute: 23, endHour: 10, endMinute: 26 },
+        "Period 7": { startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
+        "Lunch": { startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
+        "Period 8": { startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
+    }
+};
 
-//var schedules = {
-//    A
-//    B
-//    Flex B
-//    Flex A
-//    Early Dismissal A
-//    Early Dismissal B
+
 //    Race Forward A
 //    Race Forward B
 //    Finals
 //    First Day
-//};
+
+
+
+
 
 
 
@@ -183,44 +238,171 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
     //  Create one SVG per day
     //
     var w = "100%";
-    var h = 500;
+    var h = 400;
     
     var svgs = days.append("svg")
         .attr("width", w)
         .attr("height", h);
 
     svgs.append("rect")
+        .attr("class", "bgrect")
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", w)
-        .attr("height", h)
-        .attr("fill", function(d) {
-
-            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
-                return "#BBDFF7";
-                return "#0377C0";
-            } else if (d.schedule === "B" || d.schedule === "Flex B" || d.schedule === "Early Dismissal B" || d.schedule === "Race Forward B") {
-                return "#BBF7C4";
-                return "#5BC6AD";
-            } else if (d.schedule === "Finals") {
-                return "#ccc";
-            } else {
-                return "#eee";
-            }
-
-        });
+        .attr("height", h);
+//        .attr("fill", function(d) {
+//
+//            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
+//                return "#BBDFF7";
+//                return "#0377C0";
+//            } else if (d.schedule === "B" || d.schedule === "Flex B" || d.schedule === "Early Dismissal B" || d.schedule === "Race Forward B") {
+//                return "#BBF7C4";
+//                return "#5BC6AD";
+//            } else if (d.schedule === "Finals") {
+//                return "#ccc";
+//            } else {
+//                return "#eee";
+//            }
+//
+//        });
     
     //Define a time scale for one day, from 8am to 4pm
     var yScale = d3.scaleTime()
-                    .domain([ new Date(2000, 0, 1, 8), new Date(2000, 0, 1, 16) ])
+                    .domain([ makeTime(7, 30), makeTime(16, 0) ])  //7:30am to 4:00pm
                     .range([ 0, h ]);
 
+    //
+    //  Rects
+    //
+    
+    //Background rect to illustrate normal school day length
     svgs.append("rect")
         .attr("x", "10%")
-        .attr("y", yScale(new Date(2000, 0, 1, 8, 15)))
+        .attr("y", yScale(makeTime(8, 15)))  //8:15am
         .attr("width", "90%")
-        .attr("height", yScale(new Date(2000, 0, 1, 15, 15)))
-        .attr("fill", "purple");
+        .attr("height", yScale(makeTime(15, 15)) - yScale(makeTime(8, 15)))  //3:15pm
+        .attr("fill", "black")
+        .attr("opacity", 0.2)
+        .style("display", function(d) {  //temp to hide purple rects on holidays
+            if (d.schedule === "") {
+                return "none";
+            }
+        });
+
+
+
+    //
+    //  Day labels
+    //
+    
+    //Schedule type
+    svgs.append("text")
+        .attr("class", function(d) {
+
+            var classes = "schedule ";
+
+            if (d.schedule === "A" || d.schedule === "Flex A" || d.schedule === "Early Dismissal A" || d.schedule === "Race Forward A") {
+                classes += "a";
+            } else if (d.schedule === "B" || d.schedule === "Flex B" || d.schedule === "Early Dismissal B" || d.schedule === "Race Forward B") {
+                classes += "b";
+            }
+            
+            return classes;
+
+        })
+        .attr("x", w)
+        .attr("dx", -4)
+        .attr("y", 12)
+        .attr("text-anchor", "end")
+        .style("display", function(d) {
+            if (d.schedule === "") {
+                return "none";
+            }
+        })
+        .text(function(d) {
+            return d.schedule;
+        });
+
+    //No school reason
+    svgs.append("text")
+        .attr("class", "noSchoolReason")
+        .attr("x", "50%")
+        .attr("y", "50%")
+        .attr("text-anchor", "middle")
+        .style("display", function(d) {
+            if (d.note === "") {
+                return "none";
+            }
+        })
+        .text(function(d) {
+            return d.note;
+        });
+
+    //Scale start time
+    svgs.append("text")
+        .attr("class", "timeLabel")
+        .attr("x", "10%")
+        .attr("y", yScale.range()[0])
+        .attr("dy", 12)
+        .attr("text-anchor", "start")
+        .text(getTime(yScale.domain()[0]));
+
+    //Scale end time
+    svgs.append("text")
+        .attr("class", "timeLabel")
+        .attr("x", "10%")
+        .attr("y", yScale.range()[1])
+        .attr("dy", -2)
+        .attr("text-anchor", "start")
+        .text(getTime(yScale.domain()[1]));
+
+
+
+
+
+
+    //
+    //  Generate custom schedule for each day
+    //
+
+    //Create a new group for each day
+    var daySchedules = svgs.append("g")
+        .attr("class", "daySchedules");
+
+    //Within each group, bind relevant data to new groups, one per period
+    var periods = daySchedules.filter(function(d) {
+    
+            //Include only days for which we have the schedule type data available
+            
+            if (schedules[d.schedule]) {  //If this is undefined, we don't have the schedule data in yet
+                //console.log(d.schedule);
+                return true;
+            }
+            
+        })
+        .selectAll("g")
+        .data(function(d) {
+            var thisDaySchedule = schedules[d.schedule];
+            console.log(thisDaySchedule);
+            return thisDaySchedule;
+        })
+        .enter()
+        .append("g")
+        .attr("class", "period");
+        
+    //For each period, create a rect
+    periods.append("rect")
+        .attr("x", "10%")
+        .attr("y", yScale(makeTime(8, 15)))  //8:15am
+        .attr("width", "90%")
+        .attr("height", yScale(makeTime(15, 15)) - yScale(makeTime(8, 15)))  //3:15pm
+        .attr("fill", "gray");
+
+    //For each period, create a start time label
+    
+    //For each period, create an end time label
+    
+    //For each period, create a period label
 
 
 
@@ -228,49 +410,6 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
 
 
 
-
-
-//    cells.append("div")
-//        .classed("schedule", true)
-//        .style("display", function(d) {
-//            if (d.schedule === "") {
-//                return "none";
-//            }
-//        })
-//        .text(function(d) {
-//            return d.schedule;
-//        });
-//
-//    cells.append("div")
-//        .classed("noSchoolReason", true)
-//        .style("display", function(d) {
-//            if (d.note === "") {
-//                return "none";
-//            }
-//        })
-//        .text(function(d) {
-//            return d.note;
-//        });
-
-
-
-
-
-    // Toggles
-
-//    d3.select(".toggle#ab")
-//        .on("click", function() {
-//            d3.selectAll(".toggle").classed("active", false);
-//            d3.select(this).classed("active", true);
-//            d3.select("table").classed("your", false).classed("ab", true);
-//        });
-//
-//    d3.select(".toggle#your")
-//        .on("click", function() {
-//            d3.selectAll(".toggle").classed("active", false);
-//            d3.select(this).classed("active", true);
-//            d3.select("table").classed("your", true).classed("ab", false);
-//        });
 
 
 

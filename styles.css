@@ -105,7 +105,38 @@ div.day.past {
 svg {
 }
 
+rect {
+    shape-rendering: crispEdges;
+}
 
+.bgrect {
+    fill: #eee;
+}
+
+.schedule {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #999;
+}
+
+.schedule.a {
+    fill: #29B6FF;
+}
+
+.schedule.b {
+    fill: #10E85E;
+}
+
+.timeLabel {
+    font-size: 14px;
+    font-weight: bold;
+    fill: #999;
+}
+
+.noSchoolReason {
+    font-size: 24px;
+    fill: #aaa;
+}
 
 
 
