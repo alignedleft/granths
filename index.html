@@ -1,162 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Grant HS Schedule</title>
-<script type="text/javascript" src="d3.js"></script>
-<style type="text/css">
-
-
-
-
-
-body {
-    font-family: Helvetica, sans-serif;
-    font-size: 11px;
-}
-
-
-
-/* Header */
-
-#header {
-    margin-bottom: 20px;
-}
-
-#header h1 {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-#header .toggle {
-    font-size: 12px;
-    color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #eee;
-    border: 1px solid #eee;
-    cursor: pointer;
-}
-
-#header .toggle:hover {
-    border-color: deeppink;
-}
-
-#header .toggle.active {
-    font-weight: bold;
-    background-color: pink;
-    border-color: deeppink;
-}
-
-
-
-/* SVG */
-
-svg {
-    border-top: solid 1px #eee;
-    padding: 25px;
-}
-
-
-
-/* Table */
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-td {
-    width: 14%;
-    height: 150px;
-    border: 1px solid white;
-    background-color: #eee;
-    vertical-align: top;
-    cursor: pointer;
-}
-
-table.ab td {
-    height: auto;
-}
-
-div.date {
-    position: absolute;
-    width: auto;
-    text-align: left;
-    padding: 3px 0 0 3px;
-    color: #999;
-    z-index: 0;
-}
-
-div.date .year {
-    opacity: 0;
-    transition: 0.1s ease-in;
-}
-
-td:hover div.date .year {
-    opacity: 1;
-}
-
-div.schedule {
-    width: auto;
-    text-align: right;
-    padding: 3px 3px 0 0;
-    color: #333;
-    font-weight: bold;
-    z-index: 10;
-}
-
-table.ab div.schedule {
-    width: auto;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-div.noSchoolReason {
-    width: auto;
-    padding-top: 60px;
-    text-align: center;
-    vertical-align: middle;
-    color: #777;
-    font-weight: bold;
-    z-index: 20;
-}
-
-table.ab div.noSchoolReason {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-
-
-
-
-</style>
+    <meta charset="utf-8">
+    <title>Grant HS Schedule</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <link rel="stylesheet" href="base-min.css">
+    <link rel="stylesheet" href="grids-responsive-min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <div id="header">
+<!--        <h1>Grant High School 2016-2017 Academic Calendar</h1>-->
+    <!--
+        <p>
+            <span class="toggle active" id="ab">A/B Schedule</span>
+            <span class="toggle" id="your">Your Classes</span>
+        </p>
+    -->
+    </div>
+
 <script type="text/javascript">
 
-//  TODO
-//
-//  x generate table
-//  x color code, label schedules
-//  - render a daily period as SVG
-//  - render daily periods differently per d.schedule
-//  - UI for checking on/off which periods apply to you
-//  - UI for entering in your own class names
-//        for selected periods only
-//  - display class names inside daily SVGs
+
 
 
 
 var parseTime = d3.timeParse("%Y-%m-%d");
-var getMonthDay = d3.timeFormat("%b %e");
+var getDayOfWeek = d3.timeFormat("%A");
+var getDay = d3.timeFormat("%e");
+var getMonth = d3.timeFormat("%B");
 var getYear = d3.timeFormat("%Y");
 
 
@@ -171,58 +44,148 @@ var getYear = d3.timeFormat("%Y");
 //    Race Forward A
 //    Race Forward B
 //    Finals
+//    First Day
 //};
 
 
 
 
 d3.csv("grant_hs_schedule_data.csv", function(data) {
+    //console.log(data);
 
-    console.log(data);
+
+
+    //Check current date
+    var now = new Date();
+    //console.log("Now it is " + getMonthDay(now) + " " + getYear(now));
 
 
 
     //
     //  Prep data
     //
-//    var nested = [];
-//    var row = 0;
-//    var col = 0;
-//
-//    for (var i = 0; i < data.length; i++) {
-//
-//        data[i].date = parseTime(data[i].date);
-//
-//        if (typeof nested[row] === "undefined") {
-//            nested[row] = [];
-//        }
-//
-//        nested[row][col] = data[i];
-//
-//        col++;
-//        if (col === 7) {
-//            col = 0;
-//            row++;
-//        }
-//
-//    }
+    var nested = [];
+    var row = 0;
+    var col = 0;
 
+    for (var i = 0; i < data.length; i++) {
+
+        data[i].date = parseTime(data[i].date);
+
+        if (typeof nested[row] === "undefined") {
+            nested[row] = [];
+        }
+
+        //Ignore weekend days
+        if (getDayOfWeek(data[i].date) !== "Sunday" && getDayOfWeek(data[i].date) !== "Saturday") {
+        
+            nested[row][col] = data[i];
+
+            col++;
+            if (col === 5) {
+                col = 0;
+                row++;
+            }
+        
+        }
+
+    }
     //console.table(nested);
+
+
+
+    //
+    //  Create each row / week
+    //
+    var weeks = d3.select("body")
+        .selectAll("div")
+        .data(nested)
+        .enter()
+        .append("div")
+        .attr("class", "pure-g");
+
+    //
+    //  Create each div / day
+    //
+    var days = weeks.selectAll("div")
+        .data(function(d) { return d; })
+        .enter()
+        .append("div")
+        .attr("class", "pure-u-1 pure-u-lg-1-5")
+        .classed("day", true)
+        .classed("today", function(d) {
+            //If this is today
+            //xxx needs work!
+            if (d.date.getTime() == now.getTime()) {
+                alert("found today!");
+                return true;
+            }
+        })
+        .classed("past", function(d) {
+            //If this is in the past
+            if (d.date.getTime() < now.getTime()) {
+                return true;
+            }
+        });
+
+
+
+    //
+    //  Dates
+    //
+    var dates = days.append("div")
+        .attr("class", "date");
+
+    dates.append("div")
+        .attr("class", "flag")
+        .classed("today", function(d) {
+            if (d.date.getTime() <= now.getTime()) {
+                return true;
+            }
+        })
+        .text(function(d) {
+            if (d.date.getTime() <= now.getTime()) {
+                return "today";
+            }
+        });
+
+    dates.append("div")
+        .attr("class", "day")
+        .text(function(d) {
+            return getDay(d.date);
+        });
+
+    var dowMonthYears = dates.append("div")
+        .attr("class", "dowMonthYear");
+        
+    dowMonthYears.append("span")
+        .attr("class", "dayofweek")
+        .text(function(d) {
+            return getDayOfWeek(d.date);
+        });
+        
+    dowMonthYears.append("br");
+
+    dowMonthYears.append("span")
+        .attr("class", "monthyear")
+        .text(function(d) {
+            return getMonth(d.date) + " " + getYear(d.date);
+        });
+
+
+
+
+
 
 
 
     //
     //  Create one SVG per day
     //
-    var w = "10%";
-    var h = 250;
+    var w = "100%";
+    var h = 500;
     
-    var svgs = d3.select("body")
-        .selectAll("svg")
-        .data(data)
-        //.data(function(d) { return d; })
-        .enter()
-        .append("svg")
+    var svgs = days.append("svg")
         .attr("width", w)
         .attr("height", h);
 
@@ -246,14 +209,27 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
             }
 
         });
+    
+    //Define a time scale for one day, from 8am to 4pm
+    var yScale = d3.scaleTime()
+                    .domain([ new Date(2000, 0, 1, 8), new Date(2000, 0, 1, 16) ])
+                    .range([ 0, h ]);
 
-//    cells.append("div")
-//        .classed("date", true)
-//        .html(function(d) {
-//            //return getMonthDay(d.date);
-//            return getMonthDay(d.date) + " <span class=\"year\">" + getYear(d.date) + "</span>";
-//        });
-//
+    svgs.append("rect")
+        .attr("x", "10%")
+        .attr("y", yScale(new Date(2000, 0, 1, 8, 15)))
+        .attr("width", "90%")
+        .attr("height", yScale(new Date(2000, 0, 1, 15, 15)))
+        .attr("fill", "purple");
+
+
+
+
+
+
+
+
+
 //    cells.append("div")
 //        .classed("schedule", true)
 //        .style("display", function(d) {
@@ -282,19 +258,19 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
 
     // Toggles
 
-    d3.select(".toggle#ab")
-        .on("click", function() {
-            d3.selectAll(".toggle").classed("active", false);
-            d3.select(this).classed("active", true);
-            d3.select("table").classed("your", false).classed("ab", true);
-        });
-
-    d3.select(".toggle#your")
-        .on("click", function() {
-            d3.selectAll(".toggle").classed("active", false);
-            d3.select(this).classed("active", true);
-            d3.select("table").classed("your", true).classed("ab", false);
-        });
+//    d3.select(".toggle#ab")
+//        .on("click", function() {
+//            d3.selectAll(".toggle").classed("active", false);
+//            d3.select(this).classed("active", true);
+//            d3.select("table").classed("your", false).classed("ab", true);
+//        });
+//
+//    d3.select(".toggle#your")
+//        .on("click", function() {
+//            d3.selectAll(".toggle").classed("active", false);
+//            d3.select(this).classed("active", true);
+//            d3.select("table").classed("your", true).classed("ab", false);
+//        });
 
 
 
@@ -308,22 +284,5 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
 
 
 </script>
-
-
-
-
-
-<div id="header">
-    <h1>Grant High School 2016-2017 Academic Calendar</h1>
-    <p>
-        <span class="toggle active" id="ab">A/B Schedule</span>
-        <span class="toggle" id="your">Your Classes</span>
-    </p>
-</div>
-
-
-
-
-
 </body>
 </html>
