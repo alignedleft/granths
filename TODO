@@ -16,9 +16,16 @@ x render daily periods differently per d.schedule
 - if schedule type doesn't exist in JSON, show "schedule unknown"
 
 - UI for naming periods apply to you
+	http://purecss.io/forms/
 - display class names inside daily SVGs
 - periods that don't apply to you are grayed out (no colors)
 - draw "now" marker
 - "now" should auto update every so often (say 1x/minute)
 
 - ignore data from the past; take user to today
+
+- choose better colors
+	https://github.com/d3/d3-interpolate
+	https://github.com/d3/d3-scale-chromatic
+- add palettes to choose from
+- palette randomization / cycling
