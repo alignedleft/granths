@@ -146,6 +146,12 @@ rect {
     fill: #999;
 }
 
+.scheduleUnknown {
+    font-size: 14px;
+    font-style: italic;
+    fill: #aaa;
+}
+
 .noSchoolReason {
     font-size: 24px;
     fill: #aaa;

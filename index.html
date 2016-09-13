@@ -68,34 +68,34 @@ var makeTime = function(hour, minute) {
 
 var scheduleData = {
     "A": [
-        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
-        { period: "Period 2", startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
-        { period: "Lunch", startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
-        { period: "Period 3", startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
-        { period: "Period 4", startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 47 },
+        { period: "Period 2", startHour: 9, startMinute: 52, endHour: 11, endMinute: 24 },
+        { period: "Lunch", startHour: 11, startMinute: 24, endHour: 12, endMinute: 01 },
+        { period: "Period 3", startHour: 12, startMinute: 06, endHour: 13, endMinute: 38 },
+        { period: "Period 4", startHour: 13, startMinute: 43, endHour: 15, endMinute: 15 }
     ],
     "B": [
-        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 48 },
-        { period: "Period 6", startHour: 9, startMinute: 53, endHour: 11, endMinute: 26 },
-        { period: "Lunch", startHour: 11, startMinute: 26, endHour: 11, endMinute: 59 },
-        { period: "Period 7", startHour: 12, startMinute: 04, endHour: 13, endMinute: 37 },
-        { period: "Period 8", startHour: 13, startMinute: 42, endHour: 15, endMinute: 15 }
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 47 },
+        { period: "Period 6", startHour: 9, startMinute: 52, endHour: 11, endMinute: 24 },
+        { period: "Lunch", startHour: 11, startMinute: 24, endHour: 12, endMinute: 01 },
+        { period: "Period 7", startHour: 12, startMinute: 06, endHour: 13, endMinute: 38 },
+        { period: "Period 8", startHour: 13, startMinute: 43, endHour: 15, endMinute: 15 }
     ],
     "Flex A": [
-        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
-        { period: "Period 2", startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
-        { period: "Period 3", startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
-        { period: "Lunch", startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
-        { period: "Period 4", startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
-        { period: "Flex", startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 31 },
+        { period: "Flex", startHour: 9, startMinute: 36, endHour: 10, endMinute: 36 },
+        { period: "Period 2", startHour: 10, startMinute: 41, endHour: 11, endMinute: 57 },
+        { period: "Lunch", startHour: 11, startMinute: 57, endHour: 12, endMinute: 33 },
+        { period: "Period 3", startHour: 12, startMinute: 38, endHour: 13, endMinute: 54 },
+        { period: "Period 4", startHour: 13, startMinute: 59, endHour: 15, endMinute: 15 }
     ],
     "Flex B": [
-        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 30 },
-        { period: "Period 6", startHour: 9, startMinute: 35, endHour: 10, endMinute: 50 },
-        { period: "Period 7", startHour: 10, startMinute: 55, endHour: 12, endMinute: 10 },
-        { period: "Lunch", startHour: 12, startMinute: 10, endHour: 12, endMinute: 46 },
-        { period: "Period 8", startHour: 12, startMinute: 51, endHour: 14, endMinute: 05 },
-        { period: "Flex", startHour: 14, startMinute: 11, endHour: 15, endMinute: 15 }
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 31 },
+        { period: "Flex", startHour: 9, startMinute: 36, endHour: 10, endMinute: 36 },
+        { period: "Period 6", startHour: 10, startMinute: 41, endHour: 11, endMinute: 57 },
+        { period: "Lunch", startHour: 11, startMinute: 57, endHour: 12, endMinute: 33 },
+        { period: "Period 7", startHour: 12, startMinute: 38, endHour: 13, endMinute: 54 },
+        { period: "Period 8", startHour: 13, startMinute: 59, endHour: 15, endMinute: 15 }
     ],
     "Early Dismissal A": [
         { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
@@ -110,17 +110,38 @@ var scheduleData = {
         { period: "Period 7", startHour: 10, startMinute: 31, endHour: 11, endMinute: 34 },
         { period: "Lunch", startHour: 11, startMinute: 34, endHour: 12, endMinute: 7 },
         { period: "Period 8", startHour: 12, startMinute: 12, endHour: 13, endMinute: 15 }
+    ],
+    "Late Opening A": [
+        { period: "Period 1", startHour: 10, startMinute: 15, endHour: 11, endMinute: 18 },
+        { period: "Period 2", startHour: 11, startMinute: 23, endHour: 12, endMinute: 26 },
+        { period: "Lunch", startHour: 12, startMinute: 26, endHour: 12, endMinute: 59 },
+        { period: "Period 3", startHour: 13, startMinute: 4, endHour: 14, endMinute: 7 },
+        { period: "Period 4", startHour: 14, startMinute: 12, endHour: 15, endMinute: 15 }
+    ],
+    "Late Opening B": [
+        { period: "Period 5", startHour: 10, startMinute: 15, endHour: 11, endMinute: 18 },
+        { period: "Period 6", startHour: 11, startMinute: 23, endHour: 12, endMinute: 26 },
+        { period: "Lunch", startHour: 12, startMinute: 26, endHour: 12, endMinute: 59 },
+        { period: "Period 7", startHour: 13, startMinute: 4, endHour: 14, endMinute: 7 },
+        { period: "Period 8", startHour: 14, startMinute: 12, endHour: 15, endMinute: 15 }
+    ],
+    "Race Forward A": [
+        { period: "Period 1", startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        { period: "Activity", startHour: 9, startMinute: 23, endHour: 11, endMinute: 15 },
+        { period: "Lunch", startHour: 11, startMinute: 15, endHour: 11, endMinute: 51 },
+        { period: "Period 2", startHour: 11, startMinute: 56, endHour: 12, endMinute: 59 },
+        { period: "Period 3", startHour: 13, startMinute: 4, endHour: 14, endMinute: 7 },
+        { period: "Period 4", startHour: 14, startMinute: 12, endHour: 15, endMinute: 15 }
+    ],
+    "Race Forward B": [
+        { period: "Period 5", startHour: 8, startMinute: 15, endHour: 9, endMinute: 18 },
+        { period: "Activity", startHour: 9, startMinute: 23, endHour: 11, endMinute: 15 },
+        { period: "Lunch", startHour: 11, startMinute: 15, endHour: 11, endMinute: 51 },
+        { period: "Period 6", startHour: 11, startMinute: 56, endHour: 12, endMinute: 59 },
+        { period: "Period 7", startHour: 13, startMinute: 4, endHour: 14, endMinute: 7 },
+        { period: "Period 8", startHour: 14, startMinute: 12, endHour: 15, endMinute: 15 }
     ]
 };
-
-
-//    Race Forward A
-//    Race Forward B
-//    Finals
-//    First Day
-
-
-
 
 
 
@@ -431,6 +452,23 @@ d3.csv("grant_hs_schedule_data.csv", function(data) {
         .text(function(d) {
             return d.schedule;
         });
+    
+    //When it's a school day, but we don't have data for that day's schedule type
+    svgs.append("text")
+        .attr("class", "scheduleUnknown")
+        .attr("x", "50%")
+        .attr("y", "55%")
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            
+            //If this is a school day. but data for this schedule type does not exist
+            if (d.schedule !== "" && !scheduleData[d.schedule]) {
+                return "Schedule Unknown";
+            }
+            
+        });
+            
+    
 
     //No school reason
     svgs.append("text")
