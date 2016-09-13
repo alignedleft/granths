@@ -21,6 +21,14 @@ x ignore data from the past; take user to today
     http://purecss.io/forms/
 - display class names inside daily SVGs
 - periods that don't apply to you are grayed out (no colors)
+
+
+
+- store period and color values in the #
+    - make bookmarkable
+    - "add to home screen"
+
+
 - draw "now" marker
 - "now" should auto update every so often (say 1x/minute)
 
