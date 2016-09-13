@@ -8,9 +8,12 @@ x set up div structure
 x check what today is
 x render a daily period as SVG
 x render daily periods differently per d.schedule
+x click / tap to toggle between schedule and periods
 
 
 
+
+- correct flex day schedules
 
 
 - if schedule type doesn't exist in JSON, show "schedule unknown"
@@ -27,5 +30,6 @@ x render daily periods differently per d.schedule
 - choose better colors
 	https://github.com/d3/d3-interpolate
 	https://github.com/d3/d3-scale-chromatic
+    Colourlovers
 - add palettes to choose from
 - palette randomization / cycling

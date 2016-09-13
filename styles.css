@@ -113,6 +113,7 @@ div.day.past .date .monthyear {
 /* SVG */
 
 svg {
+    cursor: pointer;
 }
 
 rect {
@@ -124,7 +125,7 @@ rect {
 }
 
 .schedule {
-    font-size: 14px;
+    font-size: 24px;
     font-weight: bold;
     fill: #999;
 }
@@ -135,6 +136,14 @@ rect {
 
 .schedule.b {
     fill: #10E85E;
+}
+
+.schedule rect {
+    opacity: 0.25;
+}
+
+.day.past .schedule {
+    fill: #999;
 }
 
 .noSchoolReason {
